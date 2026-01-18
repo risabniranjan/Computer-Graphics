@@ -67,12 +67,6 @@ def main():
 # Center line
         bresenham(200,100,200,250)
 
-# Left goal post
-       # bresenham(50,150,50,200)
-
-# Right goal post
-        #bresenham(350,150,350,200)
-
 # Left goal box
         bresenham(50,140,90,140)
         bresenham(50,210,90,210)
