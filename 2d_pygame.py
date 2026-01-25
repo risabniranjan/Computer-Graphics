@@ -6,9 +6,13 @@ screen=pygame.display.set_mode((WIDTH,HEIGHT))
 pygame.display.set_caption("Bresenham algorithm")
 WHITE=(255,255,255)
 BLACK=(0,0,0)
+RED = (255, 0, 0)
+GREEN = (0, 255, 0)
+BLUE= (0, 0, 255)
+PINK = (255, 192, 203)
 
 
-def bresenham(x1,y1,x2,y2):
+def bresenham(x1,y1,x2,y2,color):
     dx=x2-x1
     dy=y2-y1
     if x2>x1:
@@ -32,7 +36,7 @@ def bresenham(x1,y1,x2,y2):
                 x=x+lx
                 y=y+ly
                 p=p+(2*dy)-(2*dx)
-            screen.set_at((round(x),round(y)),WHITE)
+            screen.set_at((round(x),round(y)),color)
     else:
         p=2*dx-dy
         while (y!=y2):
@@ -44,7 +48,8 @@ def bresenham(x1,y1,x2,y2):
                 x=x+lx
                 y=y+ly
                 p=p+(2*dx)-(2*dy)
-            screen.set_at((round(x),round(y)),WHITE)
+            screen.set_at((round(x),round(y)),color)
+
 
 def translation(x1, y1,x2,y2, tx, ty):
     x_new1 = x1 + tx
@@ -53,12 +58,12 @@ def translation(x1, y1,x2,y2, tx, ty):
     y_new2 = y2 + ty
     return x_new1, y_new1, x_new2, y_new2
 
-def scale(x1, y1, x2, y2, sx, sy):
-    x_new1 = x1 * sx
-    y_new1 = y1 * sy
-    x_new2 = x2 * sx
-    y_new2 = y2 * sy
-    return x_new1, y_new1, x_new2, y_new2
+def scale(x1, y1, x2, y2, sx, sy,cx,cy):
+    x_new1 = cx + sx * (x1 - cx)
+    y_new1 = cy + sy * (y1 - cy)
+    x_new2 = cx + sx * (x2 - cx)
+    y_new2 = cy + sy * (y2 - cy)
+    return round(x_new1), round(y_new1), round(x_new2), round(y_new2)
 
 def rotate(x1, y1, x2, y2, angle):
     import math
@@ -68,6 +73,25 @@ def rotate(x1, y1, x2, y2, angle):
     x_new2 = x2 * math.cos(angle_rad) - y2 * math.sin(angle_rad)
     y_new2 = x2 * math.sin(angle_rad) + y2 * math.cos(angle_rad)
     return round(x_new1), round(y_new1), round(x_new2), round(y_new2)
+
+def reflection(x1, y1, x2, y2, axis,cx,cy):
+    if axis == 'x':
+        x_new1 = x1
+        y_new1 = 2*cy - y1
+        x_new2 = x2
+        y_new2 = 2*cy - y2
+    elif axis == 'y':
+        x_new1 = 2*cx - x1
+        y_new1 = y1
+        x_new2 = 2*cx - x2
+        y_new2 = y2
+    else:
+        x_new1 = 2*cx - x1
+        y_new1 = 2*cy - y1
+        x_new2 = 2*cx - x2
+        y_new2 = 2*cy - y2
+    return round(x_new1), round(y_new1), round(x_new2), round(y_new2)
+
 
 def main():
     x1=int(input("Enter x1:"))
@@ -79,16 +103,21 @@ def main():
             if event.type==pygame.QUIT: 
                 pygame.quit()
                 sys.exit()
-        screen.fill(BLACK)       
-        bresenham(x1,y1,x2,y2)
-        a,b,c,d = translation(x1, y1, x2, y2, 100, 50)
-        bresenham(a,b,c,d)
-        e,f,g,h = scale(x1, y1, x2, y2, 2, 2)
-        bresenham(e,f,g,h)
-        i,j,k,l = rotate(x1, y1, x2, y2, 45)
-        bresenham(i,j,k,l)
-        
+        screen.fill(BLACK)
 
+        bresenham(x1,y1,x2,y2,WHITE)
+
+        a,b,c,d = translation(x1, y1, x2, y2, 100, 50)
+        bresenham(a,b,c,d,RED)
+
+        e,f,g,h = scale(x1, y1, x2, y2, 4,4,10,10)
+        bresenham(e,f,g,h,GREEN)
+
+        i,j,k,l = rotate(x1, y1, x2, y2, 45)
+        bresenham(i,j,k,l,BLUE)
+
+        m,n,o,p = reflection(x1, y1, x2, y2, 'y',200,150)
+        bresenham(m,n,o,p,PINK)
 
         pygame.display.flip()
         
