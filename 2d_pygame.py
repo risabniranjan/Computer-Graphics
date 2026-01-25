@@ -11,7 +11,6 @@ GREEN = (0, 255, 0)
 BLUE= (0, 0, 255)
 PINK = (255, 192, 203)
 
-
 def bresenham(x1,y1,x2,y2,color):
     dx=x2-x1
     dy=y2-y1
